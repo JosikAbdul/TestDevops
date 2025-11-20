@@ -18,12 +18,3 @@ Contenido del .zip:
 - k8s/secrets.yaml
 - bitbucket-pipelines.yml
 
-Instrucciones rápidas:
-Descomprime y revisa cada archivo en la carpeta `docs` para detalles de instalación, configuración de secrets y pasos de despliegue.
-
-
-Actualizaciones:
-- scripts/rollback_k8s.sh (script de rollback)
-- docs/rollback_steps.md (procedimientos de rollback)
-- docs/architecture.puml + docs/architecture.svg
-- screenshots: pipeline_success, rollback_log, aks_dashboard
