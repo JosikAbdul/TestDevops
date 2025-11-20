@@ -1,5 +1,4 @@
-# Solución - Prueba Técnica: DevOps
-Contenido del .zip:
+Contenido :
 - Jenkinsfile (pipeline declarativa de Jenkins)
 - azure-pipelines.yml (pipeline alternativo funcional para Azure DevOps)
 - docs/jenkins_pipeline_documentation.md
