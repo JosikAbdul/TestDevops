@@ -1,5 +1,4 @@
-# Solución - Prueba Técnica: DevOps Cloud Support Engineer
-
+# Solución - Prueba Técnica: DevOps
 Contenido del .zip:
 - Jenkinsfile (pipeline declarativa de Jenkins)
 - azure-pipelines.yml (pipeline alternativo funcional para Azure DevOps)
