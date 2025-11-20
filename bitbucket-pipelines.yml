@@ -1,0 +1,18 @@
+pipelines:
+  branches:
+    staging:
+      - step:
+          name: Run tests (parallel)
+          size: 2x
+          script:
+            - pipe: atlassian/python-pip3:1.1.1
+            - pytest -q --junitxml=reports/results.xml
+      - step:
+          name: Deploy to staging
+          script:
+            - echo "Deploying to staging..."
+    master:
+      - step:
+          name: Quality gates and deploy
+          script:
+            - echo "Run coverage, static analysis and deploy to prod"

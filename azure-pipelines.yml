@@ -1,0 +1,57 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: 'optimized-app'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: Docker@2
+      inputs:
+        command: build
+        Dockerfile: '**/Dockerfile'
+        tags: |
+          $(Build.BuildId)
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.SourcesDirectory)/reports'
+        artifactName: 'reports'
+
+- stage: PushToACR
+  dependsOn: Build
+  jobs:
+  - job: Push
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'MY-AZURE-SERVICE-CONN' 
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          az acr login --name myACR
+          docker tag $(imageName):$(Build.BuildId) myACR.azurecr.io/$(imageName):$(Build.BuildId)
+          docker push myACR.azurecr.io/$(imageName):$(Build.BuildId)
+
+- stage: Deploy
+  dependsOn: PushToACR
+  jobs:
+  - deployment: DeployToAKS
+    environment: 'staging'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'MY-AZURE-SERVICE-CONN'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az aks get-credentials --resource-group myRG --name myAKS
+                kubectl set image deployment/optimized-app optimized-app=myACR.azurecr.io/optimized-app:$(Build.BuildId)

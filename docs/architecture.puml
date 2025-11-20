@@ -1,0 +1,32 @@
+@startuml
+title Arquitectura CI/CD - AWS / Azure / Bitbucket
+
+actor Developer
+
+rectangle "GitHub" {
+  node "Actions" as actions
+}
+
+rectangle "Azure DevOps / Jenkins" {
+  node "Jenkins" as jenkins
+  node "Azure Pipelines" as azurepipelines
+}
+
+rectangle "Registries" {
+  cloud "ACR" as acr
+  cloud "ECR" as ecr
+}
+
+rectangle "Kubernetes" {
+  node "AKS" as aks
+  node "EKS" as eks
+}
+
+Developer --> actions
+actions --> ecr
+actions --> eks
+Developer --> jenkins
+jenkins --> acr
+jenkins --> aks
+
+@enduml

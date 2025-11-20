@@ -1,0 +1,2 @@
+# Cron example - ejecutar cada día a la 01:30
+30 1 * * * /usr/local/bin/log-rotation.sh /var/log/myapp >> /var/log/log-rotation-cron.log 2>&1

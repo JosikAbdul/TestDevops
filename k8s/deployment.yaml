@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: optimized-app
+  labels:
+    app: optimized-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: optimized-app
+  template:
+    metadata:
+      labels:
+        app: optimized-app
+    spec:
+      containers:
+      - name: optimized-app
+        image: myACR.azurecr.io/optimized-app:stable
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
